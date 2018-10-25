@@ -34,6 +34,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.deem.zkui.utils.HttpsGeneratorUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -145,7 +147,7 @@ public class Import extends HttpServlet {
                 }
             }
             request.getSession().setAttribute("flashMsg", "Import Completed!");
-            response.sendRedirect("/home");
+            response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request, "/home"));
         } catch (FileUploadException | IOException | InterruptedException | KeeperException ex) {
             logger.error(Arrays.toString(ex.getStackTrace()));
             ServletUtil.INSTANCE.renderError(request, response, ex.getMessage());

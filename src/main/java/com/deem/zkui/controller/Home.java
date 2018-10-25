@@ -18,6 +18,7 @@
 package com.deem.zkui.controller;
 
 import com.deem.zkui.dao.Dao;
+import com.deem.zkui.utils.HttpsGeneratorUtil;
 import com.deem.zkui.utils.ServletUtil;
 import com.deem.zkui.utils.ZooKeeperUtil;
 import com.deem.zkui.vo.LeafBean;
@@ -37,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
+import org.javalite.http.Http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +139,7 @@ public class Home extends HttpServlet {
                         request.getSession().setAttribute("flashMsg", "Node created!");
                         dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(), "Creating node: " + currentPath + newNode);
                     }
-                    response.sendRedirect("/home?zkPath=" + displayPath);
+                    response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/home?zkPath=" + displayPath));
                     break;
                 case "Save Property":
                     if (!newProperty.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
@@ -149,7 +151,7 @@ public class Home extends HttpServlet {
                         }
                         dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(), "Saving Property: " + currentPath + "," + newProperty + "=" + newValue);
                     }
-                    response.sendRedirect("/home?zkPath=" + displayPath);
+                    response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request, "/home?zkPath=" + displayPath));
                     break;
                 case "Update Property":
                     if (!newProperty.equals("") && !currentPath.equals("") && authRole.equals(ZooKeeperUtil.ROLE_ADMIN)) {
@@ -161,7 +163,7 @@ public class Home extends HttpServlet {
                         }
                         dao.insertHistory((String) request.getSession().getAttribute("authName"), request.getRemoteAddr(), "Updating Property: " + currentPath + "," + newProperty + "=" + newValue);
                     }
-                    response.sendRedirect("/home?zkPath=" + displayPath);
+                    response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/home?zkPath=" + displayPath));
                     break;
                 case "Search":
                     Set<LeafBean> searchResult = ZooKeeperUtil.INSTANCE.searchTree(searchStr, ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0], globalProps), authRole);
@@ -189,10 +191,10 @@ public class Home extends HttpServlet {
                         }
 
                     }
-                    response.sendRedirect("/home?zkPath=" + displayPath);
+                    response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/home?zkPath=" + displayPath));
                     break;
                 default:
-                    response.sendRedirect("/home");
+                    response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/home"));
             }
 
         } catch (InterruptedException | TemplateException | KeeperException ex) {

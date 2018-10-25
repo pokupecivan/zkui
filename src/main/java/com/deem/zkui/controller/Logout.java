@@ -24,6 +24,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.deem.zkui.utils.HttpsGeneratorUtil;
 import org.apache.zookeeper.ZooKeeper;
 import com.deem.zkui.utils.ServletUtil;
 import java.util.Arrays;
@@ -46,7 +48,7 @@ public class Logout extends HttpServlet {
             ZooKeeper zk = ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0],globalProps);
             request.getSession().invalidate();
             zk.close();
-            response.sendRedirect("/login");
+            response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/login"));
         } catch (InterruptedException ex) {
             logger.error(Arrays.toString(ex.getStackTrace()));
             ServletUtil.INSTANCE.renderError(request, response, ex.getMessage());

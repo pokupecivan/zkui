@@ -17,6 +17,7 @@
  */
 package com.deem.zkui.controller;
 
+import com.deem.zkui.utils.HttpsGeneratorUtil;
 import freemarker.template.TemplateException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class ChangeLog extends HttpServlet {
                 ServletUtil.INSTANCE.renderHtml(request, response, templateParam, "history.ftl.html");
 
             } else {
-                response.sendRedirect("/history");
+                response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/history"));
             }
         } catch (TemplateException ex) {
             logger.error(Arrays.toString(ex.getStackTrace()));

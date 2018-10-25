@@ -17,6 +17,7 @@
  */
 package com.deem.zkui.controller;
 
+import com.deem.zkui.utils.HttpsGeneratorUtil;
 import freemarker.template.TemplateException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class Login extends HttpServlet {
                 logger.info("Login successful: " + username);
                 session.setAttribute("authName", username);
                 session.setAttribute("authRole", role);
-                response.sendRedirect("/home");
+                response.sendRedirect(HttpsGeneratorUtil.generateHttpsString(request,"/home"));
             } else {
                 session.setAttribute("flashMsg", "Invalid Login");
                 ServletUtil.INSTANCE.renderHtml(request, response, templateParam, "login.ftl.html");
